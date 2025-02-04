@@ -1,7 +1,5 @@
-from nicegui import ui
-
-ui.html("<div class='grid'><div class='viz'>Viz</div> <div class='timer'>timer</div> <div class='scan'></div> <div class='solve'></div></div>")
-ui.add_css("""
+html = "<div class='grid'><div class='viz'>Viz</div> <div class='timer'>timer</div> <div class='scan'></div> <div class='solve'></div></div>"
+css = """
     body {
         background-color: #282828;
     }
@@ -59,9 +57,4 @@ ui.add_css("""
         text-shadow: 0px 2px 1px #9A4B3C;
         box-shadow: 0px 10px 20px -5px #9A4B3C, 0px 10px 20px 0px #070707 !important;
     }
-""")
-
-with ui.teleport(".scan"):
-    ui.button("SCAN")
-
-ui.run()
+"""
