@@ -1,4 +1,4 @@
-from nicegui import ui
+from nicegui import app, ui
 import time
 
 import kociemba
@@ -8,8 +8,8 @@ import util
 import interface
 
 kit1 = MotorKit()
-# kit2 = MotorKit(address=0x61)
-# kit3 = MotorKit(address=0x62)
+kit2 = MotorKit(address=0x61)
+kit3 = MotorKit(address=0x62)
 
 STEPS = 50
 STEP_DELAY = 0
@@ -59,12 +59,15 @@ def scan():
     print(cube_state)
     solution_string = kociemba.solve(cube_state)
 
+    anim_string = util.koc_to_anim(cube_state)
 
-def solve():
-    print(solution_string)
+    with ui.teleport(".cube"):
+        ui.run_javascript(f'AnimCube3("id=cube&bgcolor=444444&facelets={anim_string}")')
 
 
+app.add_static_file(local_file="AnimCube3.js", url_path="/AnimCube3.js")
 ui.html(interface.html)
+ui.add_head_html("<script src='AnimCube3.js'></script>")
 
 ui.add_css(interface.css)
 
@@ -72,6 +75,6 @@ with ui.teleport(".scan"):
     ui.button("SCAN", on_click=scan)
 
 with ui.teleport(".solve"):
-    ui.button("SOLVE", on_click=solve)
+    ui.button("SOLVE", on_click=solve_cube)
 
 ui.run()

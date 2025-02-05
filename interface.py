@@ -1,4 +1,4 @@
-html = "<div class='grid'><div class='viz'>Viz</div> <div class='timer'>timer</div> <div class='scan'></div> <div class='solve'></div></div>"
+html = "<div class='grid'> <div class='viz'> <div class='cube' id='cube' style='width:100%; height:80%'></div> </div> <div class='timer'>timer</div> <div class='scan'></div> <div class='solve'></div></div>"
 css = """
     body {
         background-color: #282828;
@@ -26,7 +26,7 @@ css = """
         height: 80vh
     }
 
-    .grid div {
+    .grid > div {
         background-color: #444444;
         padding: 50px 50px;
         border-radius: 20px;
@@ -56,5 +56,9 @@ css = """
         background: linear-gradient(#f4c9ab, #e67849) !important;
         text-shadow: 0px 2px 1px #9A4B3C;
         box-shadow: 0px 10px 20px -5px #9A4B3C, 0px 10px 20px 0px #070707 !important;
+    }
+
+    .cube {
+        display: inline-block;
     }
 """
