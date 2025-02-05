@@ -1,45 +1,72 @@
-import pygame
-import pygame.camera
+import cv2
 from PIL import Image
 import numpy as np
+import time
 
-PATH_IMG1 = "cam1.png"
-PATH_IMG2 = "cam2.png"
+PATH_IMG1 = "./cam1.png"
+PATH_IMG2 = "./cam2.png"
+
+x=0
+y=0
 
 
 def closest_color(color):
-    colors = {
-        [255, 0, 0]: "R",
-        [0, 255, 0]: "F",
-        [0, 0, 0]: "U",
-        [0, 0, 255]: "B",
-        [255, 100, 0]: "L",
-        [255, 255, 0]: "D",
-    }
+    # colors = {
+    #     [255, 0, 0]: "R",
+    #     [0, 255, 0]: "F",
+    #     [0, 0, 0]: "U",
+    #     [0, 0, 255]: "B",
+    #     [255, 100, 0]: "L",
+    #     [255, 255, 0]: "D",
+    # }
 
-    color_keys = np.array(colors.keys())
+    color_keys =  np.array([
+        [255, 0, 0],
+        [0, 255, 0],
+        [255, 255, 255],
+        [0, 0, 255],
+        [255, 100, 0],
+        [255, 255, 0],
+    ])
+    colors=["L", "F", "U", "B", "L", "D"]
     color = np.array(color)
 
     distances = np.sqrt(np.sum((color_keys - color) ** 2, axis=1))
-    index_of_smallest = np.argmin()
+    print(color)
+    print(distances)
+    index_of_smallest = np.argmin(distances)
     smallest_distance = colors[index_of_smallest]
     return smallest_distance
 
 
 def take_images():
-    pygame.camera.init()
-    pygame.camera.list_cameras()
+    cam1 = cv2.VideoCapture(0)
+    cam1.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cam1.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    cam1 = pygame.camera.Camera("/dev/video0", (640, 480))
-    cam1.start()
-    img1 = cam1.get_image()
+    time.sleep(1.5)
 
-    cam2 = pygame.camera.Camera("/dev/video1", (640, 480))
-    cam2.start()
-    img2 = cam2.get_image()
+    r, i = cam1.read()
+    cam1.release()
 
-    pygame.image.save(img1, PATH_IMG1)
-    pygame.image.save(img2, PATH_IMG2)
+    cv2.imshow("Nice", i)
+    cv2.waitKey(0)
+    cv2.destroyWindow("Nice")
+    cv2.imwrite(PATH_IMG1, i)
+
+
+    # cam2 = cv2.VideoCapture(1)
+    # cam2.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    # cam2.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    #
+    # time.sleep(1.5)
+    #
+    # r, i = cam2.read()
+    # cam2.release()
+    #
+    # cv2.imshow("Nice", i)
+    # cv2.destroyWindow("Nice")
+    # cv2.imwrite(PATH_IMG2, i)
 
 
 def process_cam1():
@@ -80,6 +107,7 @@ def process_cam1():
     F.append(closest_color(pixels[x, y]))
     F.append(closest_color(pixels[x, y]))
 
+    print("process")
     return U, R, F
 
 

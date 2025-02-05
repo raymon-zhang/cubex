@@ -8,8 +8,8 @@ import util
 import interface
 
 kit1 = MotorKit()
-kit2 = MotorKit(address=0x61)
-kit3 = MotorKit(address=0x62)
+# kit2 = MotorKit(address=0x61)
+# kit3 = MotorKit(address=0x62)
 
 STEPS = 50
 STEP_DELAY = 0
@@ -56,11 +56,12 @@ def scan():
     global solution_string
     util.take_images()
     cube_state = util.process()
+    print(cube_state)
     solution_string = kociemba.solve(cube_state)
 
 
-# def solve():
-#     print(solution_string)
+def solve():
+    print(solution_string)
 
 
 ui.html(interface.html)
@@ -71,6 +72,6 @@ with ui.teleport(".scan"):
     ui.button("SCAN", on_click=scan)
 
 with ui.teleport(".solve"):
-    ui.button("SOLVE", on_click=solve_cube)
+    ui.button("SOLVE", on_click=solve)
 
 ui.run()
